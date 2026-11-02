@@ -1,20 +1,33 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+
+import { useRouter } from "expo-router";
 
 export default function WelcomeButtons() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.loginButton}
-        onPress={() => console.log("Login")}
+        onPress={() => router.push("/admin")}
       >
-        <Text style={styles.loginText}>Se connecter</Text>
+        <Text style={styles.loginText}>
+          Se connecter
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.registerButton}
         onPress={() => console.log("Register")}
       >
-        <Text style={styles.registerText}>Créer un compte</Text>
+        <Text style={styles.registerText}>
+          Créer un compte
+        </Text>
       </TouchableOpacity>
     </View>
   );

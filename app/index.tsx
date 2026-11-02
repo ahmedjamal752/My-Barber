@@ -8,9 +8,9 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import WelcomeLogo from "../components/WelcomeLogo";
-import WelcomeButtons from "../components/WelcomeButtons";
-import WelcomeFooter from "../components/WelcomeFooter";
+import WelcomeLogo from "../components/acceuill/WelcomeLogo";
+import WelcomeButtons from "../components/acceuill/WelcomeButtons";
+import WelcomeFooter from "../components/acceuill/WelcomeFooter";
 
 export default function WelcomeScreen() {
   return (
