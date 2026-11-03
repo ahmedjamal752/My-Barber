@@ -14,7 +14,7 @@ export default function WelcomeButtons() {
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.loginButton}
-        onPress={() => router.push("/admin")}
+        onPress={() => router.push("/login")}
       >
         <Text style={styles.loginText}>
           Se connecter
