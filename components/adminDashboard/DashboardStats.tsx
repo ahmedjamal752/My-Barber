@@ -1,5 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 
 const stats = [
   {
