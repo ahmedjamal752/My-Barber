@@ -1,29 +1,43 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 const actions = [
   {
     title: "Ajouter un rendez-vous",
-    icon: "calendar-outline",
+    icon: "calendar-outline" as const,
+    route: "/admin/appointment" as const,
   },
   {
     title: "Ajouter un service",
-    icon: "cut-outline",
+    icon: "cut-outline" as const,
+    route: "/admin/service" as const,
   },
   {
     title: "Ajouter un client",
-    icon: "person-add-outline",
+    icon: "person-add-outline" as const,
+    route: "/admin/client" as const,
   },
-] as const;
+];
 
 export default function QuickActions() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
       {actions.map((action) => (
         <TouchableOpacity
           key={action.title}
           style={styles.action}
-          onPress={() => console.log(action.title)}
+          onPress={() => router.push(action.route)}
+          activeOpacity={0.7}
         >
           <Ionicons
             name={action.icon}
@@ -31,7 +45,9 @@ export default function QuickActions() {
             color="#B8955A"
           />
 
-          <Text style={styles.text}>{action.title}</Text>
+          <Text style={styles.text}>
+            {action.title}
+          </Text>
 
           <Ionicons
             name="chevron-forward"
@@ -51,7 +67,7 @@ const styles = StyleSheet.create({
   action: {
     backgroundColor: "#252525",
     padding: 16,
-    borderRadius: 10,
+    borderRadius: 14,
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
@@ -59,6 +75,6 @@ const styles = StyleSheet.create({
   text: {
     color: "#F8F7F4",
     flex: 1,
-    fontSize: 14,
+    fontSize: 15,
   },
 });

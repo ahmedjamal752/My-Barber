@@ -23,7 +23,7 @@ export default function WelcomeButtons() {
 
       <TouchableOpacity
         style={styles.registerButton}
-        onPress={() => console.log("Register")}
+        onPress={() => router.push("/register")}
       >
         <Text style={styles.registerText}>
           Créer un compte
