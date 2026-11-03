@@ -1,5 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Route } from "expo-router/build/Route";
+import { router } from "expo-router";
 
 export default function DashboardHeader() {
   return (
@@ -10,7 +12,7 @@ export default function DashboardHeader() {
       </View>
 
       <View style={styles.avatar}>
-        <Ionicons name="person" size={24} color="#B8955A" />
+        <Ionicons name="person" size={24} color="#B8955A" onPress={ () => { router.push("./profile") } } />
       </View>
     </View>
   );
