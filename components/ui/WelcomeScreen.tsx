@@ -10,9 +10,9 @@ import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import WelcomeLogo from "../WelcomeLogo";
-import WelcomeButtons from "../WelcomeButtons";
-import WelcomeFooter from "../WelcomeFooter";
+import WelcomeLogo from "../acceuill/WelcomeLogo";
+import WelcomeButtons from "../acceuill/WelcomeButtons";
+import WelcomeFooter from "../acceuill/WelcomeFooter";
 
 export default function WelcomeScreen() {
   const { width, height } = useWindowDimensions();
