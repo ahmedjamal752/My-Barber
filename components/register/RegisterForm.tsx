@@ -1,3 +1,5 @@
+import { router } from "expo-router";
+import React from "react";
 import { useState } from "react";
 import {
   View,
@@ -35,6 +37,8 @@ export default function RegisterForm() {
       "Inscription",
       "Le formulaire est valide. La connexion à l'API sera ajoutée ensuite."
     );
+   
+    
   };
 
   return (
@@ -91,9 +95,10 @@ export default function RegisterForm() {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={handleRegister}
+         onPress={() => router.push("/client")}
+    
       >
-        <Text style={styles.buttonText}>Créer mon compte</Text>
+        <Text  style={styles.buttonText}>Créer mon compte</Text>
       </TouchableOpacity>
     </View>
   );

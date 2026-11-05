@@ -6,6 +6,7 @@ import {
 } from "react-native";
 
 import { useRouter } from "expo-router";
+import React from "react";
 
 export default function WelcomeButtons() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function WelcomeButtons() {
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.loginButton}
-        onPress={() => router.push("/login")}
+        onPress={() => router.push("/admin")}
       >
         <Text style={styles.loginText}>
           Se connecter
@@ -23,7 +24,8 @@ export default function WelcomeButtons() {
 
       <TouchableOpacity
         style={styles.registerButton}
-        onPress={() => router.push("/register")}
+          onPress={() => router.push("/register")}
+        
       >
         <Text style={styles.registerText}>
           Créer un compte
