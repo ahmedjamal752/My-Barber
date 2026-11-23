@@ -1,114 +1,190 @@
-
+import { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
+  TouchableOpacity,
+  Alert,
+  Linking,
 } from "react-native";
-
 import { Ionicons } from "@expo/vector-icons";
-
-const clients = [
-  {
-    id: "1",
-    name: "Ahmed Benali",
-    phone: "+212 612345678",
-    email: "ahmed@gmail.com",
-    appointments: 5,
-  },
-  {
-    id: "2",
-    name: "Youssef Karim",
-    phone: "+212 623456789",
-    email: "youssef@gmail.com",
-    appointments: 3,
-  },
-  {
-    id: "3",
-    name: "Mohamed Amine",
-    phone: "+212 634567890",
-    email: "mohamed@gmail.com",
-    appointments: 8,
-  },
-  {
-    id: "4",
-    name: "Omar Hassan",
-    phone: "+212 645678901",
-    email: "omar@gmail.com",
-    appointments: 2,
-  },
-];
+import { useRouter } from "expo-router";
+import { useAppStore } from "../../lib/store";
+import { Client } from "../../lib/mockData";
 
 export default function ClientsList() {
+  const router = useRouter();
+  const { clients } = useAppStore();
+  const [search, setSearch] = useState("");
+
+  const filtered = clients.filter(
+    (c) =>
+      c.name.toLowerCase().includes(search.toLowerCase()) ||
+      c.phone.includes(search) ||
+      c.email.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const handleClientAction = (client: Client) => {
+    Alert.alert(
+      client.name,
+      `Téléphone : ${client.phone}\nEmail : ${client.email}\nRendez-vous : ${client.appointmentsCount}\nDernière visite : ${client.lastVisit}\n${client.notes ? `Note : ${client.notes}` : ""}`,
+      [
+        {
+          text: "Appeler",
+          onPress: () => {
+            Linking.openURL(`tel:${client.phone}`).catch(() => {
+              Alert.alert("Contact", `Numéro : ${client.phone}`);
+            });
+          },
+        },
+        {
+          text: "Prendre un RDV pour lui",
+          onPress: () => router.push("/admin/add-appointment"),
+        },
+        { text: "Fermer", style: "cancel" },
+      ]
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.search}>
-        <Ionicons name="search-outline" size={20} color="#999" />
+      <View style={styles.searchRow}>
+        <View style={styles.search}>
+          <Ionicons name="search-outline" size={18} color="#B8955A" />
+          <TextInput
+            placeholder="Rechercher par nom, tél ou email..."
+            placeholderTextColor="#777"
+            style={styles.searchInput}
+            value={search}
+            onChangeText={setSearch}
+          />
+          {search.length > 0 && (
+            <TouchableOpacity onPress={() => setSearch("")}>
+              <Ionicons name="close-circle" size={16} color="#777" />
+            </TouchableOpacity>
+          )}
+        </View>
 
-        <TextInput
-          placeholder="Rechercher un client..."
-          placeholderTextColor="#777"
-          style={styles.searchInput}
-        />
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => router.push("/admin/client")}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="person-add" size={18} color="#171717" />
+        </TouchableOpacity>
       </View>
 
-      {clients.map((client) => (
-        <View key={client.id} style={styles.card}>
-          <View style={styles.avatar}>
-            <Ionicons name="person" size={23} color="#B8955A" />
-          </View>
+      <Text style={styles.counterText}>
+        {filtered.length} client{filtered.length > 1 ? "s" : ""} trouvé{filtered.length > 1 ? "s" : ""}
+      </Text>
 
-          <View style={styles.info}>
-            <Text style={styles.name}>{client.name}</Text>
-            <Text style={styles.phone}>{client.phone}</Text>
-            <Text style={styles.email}>{client.email}</Text>
-            <Text style={styles.history}>
-              {client.appointments} rendez-vous
-            </Text>
-          </View>
-
-          <Ionicons
-            name="chevron-forward"
-            size={20}
-            color="#B8955A"
-          />
+      {filtered.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Ionicons name="person-outline" size={36} color="#555" />
+          <Text style={styles.emptyText}>Aucun client trouvé pour "{search}"</Text>
         </View>
-      ))}
+      ) : (
+        filtered.map((client) => (
+          <TouchableOpacity
+            key={client.id}
+            style={styles.card}
+            onPress={() => handleClientAction(client)}
+            activeOpacity={0.8}
+          >
+            <View style={styles.avatar}>
+              <Ionicons name="person" size={20} color="#B8955A" />
+            </View>
+
+            <View style={styles.info}>
+              <Text style={styles.name}>{client.name}</Text>
+              <Text style={styles.phone}>{client.phone}</Text>
+              <Text style={styles.email}>{client.email}</Text>
+              <View style={styles.metaRow}>
+                <Text style={styles.history}>
+                  {client.appointmentsCount} rendez-vous
+                </Text>
+                <Text style={styles.dot}>•</Text>
+                <Text style={styles.lastVisit}>{client.lastVisit}</Text>
+              </View>
+            </View>
+
+            <Ionicons name="chevron-forward" size={18} color="#B8955A" />
+          </TouchableOpacity>
+        ))
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    gap: 14,
+    gap: 12,
   },
-  search: {
-    backgroundColor: "#252525",
-    borderRadius: 12,
-    paddingHorizontal: 15,
+  searchRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    marginBottom: 10,
+  },
+  search: {
+    flex: 1,
+    backgroundColor: "#252525",
+    borderWidth: 1,
+    borderColor: "#3A3A3A",
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
   searchInput: {
     flex: 1,
     color: "#F8F7F4",
-    paddingVertical: 15,
+    paddingVertical: 12,
+    fontSize: 14,
+  },
+  addButton: {
+    backgroundColor: "#B8955A",
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  counterText: {
+    color: "#888",
+    fontSize: 12,
+    marginTop: -4,
+    marginBottom: 4,
+  },
+  emptyContainer: {
+    backgroundColor: "#222",
+    borderRadius: 12,
+    padding: 30,
+    alignItems: "center",
+    gap: 8,
+  },
+  emptyText: {
+    color: "#777",
+    fontSize: 13,
   },
   card: {
     backgroundColor: "#252525",
+    borderWidth: 1,
+    borderColor: "#333",
     borderRadius: 14,
-    padding: 15,
+    padding: 14,
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
   },
   avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 25,
-    backgroundColor: "#3A3023",
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "rgba(184, 149, 90, 0.15)",
+    borderWidth: 1,
+    borderColor: "rgba(184, 149, 90, 0.3)",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -121,18 +197,32 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   phone: {
-    color: "#B8955A",
+    color: "#D8C3A5",
     fontSize: 12,
-    marginTop: 5,
+    marginTop: 2,
   },
   email: {
-    color: "#999",
-    fontSize: 12,
-    marginTop: 4,
+    color: "#888",
+    fontSize: 11,
+    marginTop: 1,
+  },
+  metaRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    marginTop: 6,
   },
   history: {
     color: "#75C69A",
-    fontSize: 12,
-    marginTop: 7,
+    fontSize: 11,
+    fontWeight: "600",
+  },
+  dot: {
+    color: "#555",
+    fontSize: 10,
+  },
+  lastVisit: {
+    color: "#999",
+    fontSize: 11,
   },
 });

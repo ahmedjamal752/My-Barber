@@ -1,6 +1,4 @@
-
 import { useState } from "react";
-
 import {
   View,
   Text,
@@ -12,22 +10,24 @@ import {
   ScrollView,
   Platform,
 } from "react-native";
-
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
-type Field = {
+export type FormField = {
   name: string;
+  key: string;
   placeholder: string;
   keyboardType?: "default" | "email-address" | "phone-pad" | "numeric";
+  defaultValue?: string;
 };
 
 type Props = {
   title: string;
   subtitle: string;
   buttonText: string;
-  fields: Field[];
+  fields: FormField[];
+  onSubmitData?: (values: Record<string, string>) => void;
 };
 
 export default function CreateForm({
@@ -35,39 +35,43 @@ export default function CreateForm({
   subtitle,
   buttonText,
   fields,
+  onSubmitData,
 }: Props) {
   const router = useRouter();
 
-  const [values, setValues] = useState<Record<string, string>>({});
+  const [values, setValues] = useState<Record<string, string>>(() => {
+    const init: Record<string, string> = {};
+    fields.forEach((f) => {
+      if (f.defaultValue) init[f.key] = f.defaultValue;
+    });
+    return init;
+  });
 
   const handleSubmit = () => {
-    const emptyField = fields.find(
-      (field) => !values[field.name]?.trim()
-    );
-
+    const emptyField = fields.find((f) => !values[f.key]?.trim());
     if (emptyField) {
-      Alert.alert("Erreur", "Veuillez remplir tous les champs.");
+      Alert.alert("Champs manquants", `Veuillez remplir le champ : "${emptyField.name}".`);
       return;
     }
 
-    const emailField = fields.find(
-      (field) => field.keyboardType === "email-address"
-    );
+    const emailField = fields.find((f) => f.keyboardType === "email-address");
+    if (emailField && values[emailField.key]) {
+      if (!/^\S+@\S+\.\S+$/.test(values[emailField.key])) {
+        Alert.alert("Email invalide", "Veuillez renseigner une adresse email correcte.");
+        return;
+      }
+    }
 
-    if (
-      emailField &&
-      !/^\S+@\S+\.\S+$/.test(values[emailField.name])
-    ) {
-      Alert.alert("Erreur", "Adresse email invalide.");
-      return;
+    if (onSubmitData) {
+      onSubmitData(values);
     }
 
     Alert.alert(
       "Succès",
-      `${title} : formulaire validé !`,
+      `${title} a été enregistré avec succès !`,
       [
         {
-          text: "OK",
+          text: "Parfait",
           onPress: () => router.back(),
         },
       ]
@@ -75,10 +79,7 @@ export default function CreateForm({
   };
 
   return (
-    <SafeAreaView
-      style={styles.safeArea}
-      edges={["top", "left", "right"]}
-    >
+    <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
       <KeyboardAvoidingView
         style={styles.keyboard}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -95,32 +96,19 @@ export default function CreateForm({
             onPress={() => router.back()}
             activeOpacity={0.7}
           >
-            <Ionicons
-              name="arrow-back"
-              size={22}
-              color="#B8955A"
-            />
-
-            <Text style={styles.backText}>
-              Retour au dashboard
-            </Text>
+            <Ionicons name="arrow-back" size={20} color="#B8955A" />
+            <Text style={styles.backText}>Retour au tableau de bord</Text>
           </TouchableOpacity>
 
           {/* Titre */}
           <Text style={styles.title}>{title}</Text>
-
-          <Text style={styles.subtitle}>
-            {subtitle}
-          </Text>
+          <Text style={styles.subtitle}>{subtitle}</Text>
 
           {/* Formulaire */}
           <View style={styles.form}>
             {fields.map((field) => (
-              <View key={field.name} style={styles.field}>
-                <Text style={styles.label}>
-                  {field.name}
-                </Text>
-
+              <View key={field.key} style={styles.field}>
+                <Text style={styles.label}>{field.name}</Text>
                 <TextInput
                   style={styles.input}
                   placeholder={field.placeholder}
@@ -131,26 +119,24 @@ export default function CreateForm({
                       ? "none"
                       : "sentences"
                   }
-                  value={values[field.name] || ""}
-                  onChangeText={(value) =>
-                    setValues((previous) => ({
-                      ...previous,
-                      [field.name]: value,
+                  value={values[field.key] || ""}
+                  onChangeText={(val) =>
+                    setValues((prev) => ({
+                      ...prev,
+                      [field.key]: val,
                     }))
                   }
                 />
               </View>
             ))}
 
-            {/* Bouton enregistrer */}
             <TouchableOpacity
               style={styles.submit}
               onPress={handleSubmit}
-              activeOpacity={0.8}
+              activeOpacity={0.85}
             >
-              <Text style={styles.submitText}>
-                {buttonText}
-              </Text>
+              <Text style={styles.submitText}>{buttonText}</Text>
+              <Ionicons name="checkmark-circle-outline" size={20} color="#171717" />
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -164,81 +150,77 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#171717",
   },
-
   keyboard: {
     flex: 1,
   },
-
   container: {
     flex: 1,
     backgroundColor: "#171717",
   },
-
   content: {
     paddingHorizontal: 24,
-    paddingTop: 20,
+    paddingTop: 15,
     paddingBottom: 50,
   },
-
   back: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
-    marginBottom: 35,
+    gap: 8,
+    marginBottom: 24,
+    alignSelf: "flex-start",
   },
-
   backText: {
     color: "#B8955A",
     fontSize: 14,
-    fontWeight: "500",
-  },
-
-  title: {
-    color: "#F8F7F4",
-    fontSize: 28,
-    fontWeight: "bold",
-  },
-
-  subtitle: {
-    color: "#999",
-    fontSize: 14,
-    marginTop: 10,
-    lineHeight: 22,
-  },
-
-  form: {
-    marginTop: 30,
-    gap: 20,
-  },
-
-  field: {
-    gap: 10,
-  },
-
-  label: {
-    color: "#D8C3A5",
-    fontSize: 14,
     fontWeight: "600",
   },
-
+  title: {
+    color: "#F8F7F4",
+    fontSize: 26,
+    fontWeight: "bold",
+  },
+  subtitle: {
+    color: "#999",
+    fontSize: 13,
+    marginTop: 8,
+    lineHeight: 20,
+  },
+  form: {
+    marginTop: 25,
+    gap: 18,
+  },
+  field: {
+    gap: 8,
+  },
+  label: {
+    color: "#D8C3A5",
+    fontSize: 13,
+    fontWeight: "600",
+  },
   input: {
     backgroundColor: "#252525",
     borderWidth: 1,
     borderColor: "#3A3A3A",
     borderRadius: 12,
-    padding: 16,
+    padding: 15,
     color: "#F8F7F4",
     fontSize: 15,
   },
-
   submit: {
     backgroundColor: "#B8955A",
-    padding: 17,
+    paddingVertical: 16,
     borderRadius: 12,
+    flexDirection: "row",
     alignItems: "center",
-    marginTop: 10,
+    justifyContent: "center",
+    gap: 8,
+    marginTop: 15,
+    shadowColor: "#B8955A",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
   },
-
   submitText: {
     color: "#171717",
     fontSize: 16,
