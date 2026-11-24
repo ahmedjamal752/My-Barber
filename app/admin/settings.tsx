@@ -148,7 +148,7 @@ export default function AdminSettingsScreen() {
           onPress={handleLogout}
           activeOpacity={0.8}
         >
-          <Ionicons name="log-out-outline" size={20} color="#EF4444" />
+          <Ionicons name="log-out-outline" size={20} color="#B8955A" />
           <Text style={styles.logoutText}>Se déconnecter</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -329,14 +329,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
-    backgroundColor: "rgba(239, 68, 68, 0.1)",
+    backgroundColor: "rgba(184, 149, 90, 0.1)",
     borderWidth: 1,
-    borderColor: "rgba(239, 68, 68, 0.3)",
+    borderColor: "rgba(184, 149, 90, 0.3)",
     paddingVertical: 14,
     borderRadius: 12,
   },
   logoutText: {
-    color: "#EF4444",
+    color: "#B8955A",
     fontSize: 14,
     fontWeight: "bold",
   },

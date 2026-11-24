@@ -384,15 +384,15 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   confirmedPill: {
-    backgroundColor: "rgba(117, 198, 154, 0.15)",
+    backgroundColor: "rgba(184, 149, 90, 0.15)",
     borderWidth: 1,
-    borderColor: "#75C69A",
+    borderColor: "#B8955A",
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 8,
   },
   confirmedPillText: {
-    color: "#75C69A",
+    color: "#B8955A",
     fontSize: 10,
     fontWeight: "bold",
   },

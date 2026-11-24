@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   optionVisits: {
-    color: "#75C69A",
+    color: "#B8955A",
     fontSize: 11,
     fontWeight: "600",
   },

@@ -25,7 +25,7 @@ export default function NextAppointment({
         <View
           style={[
             styles.dot,
-            { backgroundColor: confirmed ? "#75C69A" : "#E5B85C" },
+            { backgroundColor: confirmed ? "#B8955A" : "#E5B85C" },
           ]}
         />
         <Text style={styles.badgeText}>{status}</Text>

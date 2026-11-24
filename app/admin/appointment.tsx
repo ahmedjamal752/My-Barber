@@ -138,15 +138,15 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   summaryPill: {
-    backgroundColor: "rgba(117, 198, 154, 0.15)",
+    backgroundColor: "rgba(184, 149, 90, 0.15)",
     borderWidth: 1,
-    borderColor: "#75C69A",
+    borderColor: "#B8955A",
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 12,
   },
   summaryPillText: {
-    color: "#75C69A",
+    color: "#B8955A",
     fontSize: 12,
     fontWeight: "600",
   },

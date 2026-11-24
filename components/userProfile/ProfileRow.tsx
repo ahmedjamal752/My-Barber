@@ -23,7 +23,7 @@ export default function ProfileRow({
   isLast = false,
 }: Props) {
   const isSwitch = switchValue !== undefined;
-  const color = destructive ? "#D64545" : "#F8F7F4";
+  const color = destructive ? "#D8C3A5" : "#F8F7F4";
   const Container: any = isSwitch || !onPress ? View : TouchableOpacity;
 
   return (
@@ -35,7 +35,7 @@ export default function ProfileRow({
       <Ionicons
         name={icon}
         size={20}
-        color={destructive ? "#D64545" : "#B8955A"}
+        color="#B8955A"
       />
       <Text style={[styles.label, { color }]}>{label}</Text>
 

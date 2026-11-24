@@ -248,9 +248,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#333",
   },
   confirmedBadge: {
-    backgroundColor: "rgba(117, 198, 154, 0.15)",
+    backgroundColor: "rgba(184, 149, 90, 0.15)",
     borderWidth: 1,
-    borderColor: "#75C69A",
+    borderColor: "#B8955A",
   },
   pendingBadge: {
     backgroundColor: "rgba(229, 169, 60, 0.15)",
@@ -258,21 +258,21 @@ const styles = StyleSheet.create({
     borderColor: "#E5A93C",
   },
   finishedBadge: {
-    backgroundColor: "rgba(184, 149, 90, 0.15)",
+    backgroundColor: "rgba(216, 195, 165, 0.12)",
     borderWidth: 1,
-    borderColor: "#B8955A",
+    borderColor: "#D8C3A5",
   },
   cancelledBadge: {
-    backgroundColor: "rgba(239, 68, 68, 0.15)",
+    backgroundColor: "#252525",
     borderWidth: 1,
-    borderColor: "#EF4444",
+    borderColor: "#3A3A3A",
   },
   statusText: {
     fontSize: 11,
     fontWeight: "bold",
   },
   confirmedText: {
-    color: "#75C69A",
+    color: "#B8955A",
   },
   pendingText: {
     color: "#E5A93C",
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     color: "#D8C3A5",
   },
   cancelledText: {
-    color: "#EF4444",
+    color: "#888",
   },
   divider: {
     height: 1,

@@ -864,11 +864,15 @@ const styles = StyleSheet.create({
   },
 
   confirmedBadge: {
-    backgroundColor: "#183B2A",
+    backgroundColor: "rgba(184, 149, 90, 0.15)",
+    borderWidth: 1,
+    borderColor: "#B8955A",
   },
 
   pendingBadge: {
-    backgroundColor: "#40351F",
+    backgroundColor: "rgba(229, 169, 60, 0.15)",
+    borderWidth: 1,
+    borderColor: "#E5A93C",
   },
 
   statusText: {
